@@ -2,7 +2,7 @@ import math
 import random
 import sys
 from time import time
-from Form import *
+from newForm import *
 
 QSchanges = 0
 QScompares = 0
