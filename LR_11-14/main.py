@@ -112,12 +112,12 @@ class LabaFinal(QtWidgets.QMainWindow):
         j = end - 1
 
         while True:
-            QScompares += 1
             while i <= j and arrayFrom[i] <= pivot:
                 i += 1
-            QScompares += 1
+                QScompares += 1
             while i <= j and arrayFrom[j] >= pivot:
                 j -= 1
+                QScompares += 1
 
             if i <= j:
                 arrayFrom[i], arrayFrom[j] = arrayFrom[j], arrayFrom[i]
@@ -128,6 +128,10 @@ class LabaFinal(QtWidgets.QMainWindow):
                 return j
 
     def sorts_analyze(self):
+        for i in range(7):
+            self.ui.tableWidget.setItem(i, 1, QtWidgets.QTableWidgetItem(""))
+            self.ui.tableWidget.setItem(i, 2, QtWidgets.QTableWidgetItem(""))
+            self.ui.tableWidget.setItem(i, 3, QtWidgets.QTableWidgetItem(""))
         mainArray = [random.randint(1, 100000) for x in range(self.ui.spinBox.value())]
         if self.ui.bubble.isChecked():
             self.bubble_sort(mainArray)
