@@ -128,9 +128,7 @@ class LabaFinal(QtWidgets.QMainWindow):
                 return j
 
     def sorts_analyze(self):
-        self.ui.tableWidget.clearContents()
-        self.ui.tableWidget.update()
-        mainArray = [random.randint(1, 100000) for x in range(self.ui.spinBox.value())]
+        mainArray = [random.randint(1, self.ui.spinBox.value()) for x in range(self.ui.spinBox.value())]
         if self.ui.bubble.isChecked():
             self.bubble_sort(mainArray)
         if self.ui.select.isChecked():
