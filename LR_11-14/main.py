@@ -4,6 +4,8 @@ import sys
 from time import time
 from Form import *
 
+QSchanges = 0
+QScompares = 0
 
 class LabaFinal(QtWidgets.QMainWindow):
     def __init__(self, parent=None):
@@ -95,6 +97,36 @@ class LabaFinal(QtWidgets.QMainWindow):
         self.ui.tableWidget.setItem(2, 2, QtWidgets.QTableWidgetItem(str(change_count)))
         self.ui.tableWidget.setItem(2, 3, QtWidgets.QTableWidgetItem(str(float('{:.3f}'.format(end_time - start_time)))))
 
+    def quick_sort(self, arrayFrom, start, end):
+        if end - start > 1:
+            p = self.partition(arrayFrom, start, end)
+            self.quick_sort(arrayFrom, start, p)
+            self.quick_sort(arrayFrom, p + 1, end)
+
+
+    def partition(self, arrayFrom, start, end):
+        global QSchanges
+        global QScompares
+        pivot = arrayFrom[start]
+        i = start + 1
+        j = end - 1
+
+        while True:
+            QScompares += 1
+            while i <= j and arrayFrom[i] <= pivot:
+                i += 1
+            QScompares += 1
+            while i <= j and arrayFrom[j] >= pivot:
+                j -= 1
+
+            if i <= j:
+                arrayFrom[i], arrayFrom[j] = arrayFrom[j], arrayFrom[i]
+                QSchanges += 1
+            else:
+                arrayFrom[start], arrayFrom[j] = arrayFrom[j], arrayFrom[start]
+                QSchanges += 1
+                return j
+
     def sorts_analyze(self):
         mainArray = [random.randint(1, 100000) for x in range(self.ui.spinBox.value())]
         if self.ui.bubble.isChecked():
@@ -103,6 +135,16 @@ class LabaFinal(QtWidgets.QMainWindow):
             self.selection_sort(mainArray)
         if self.ui.inlude.isChecked():
             self.insertion_sort(mainArray)
+        if self.ui.fast.isChecked():
+            array_for_sort = mainArray.copy()
+
+            start_time = time()
+            self.quick_sort(array_for_sort, 0, len(array_for_sort))
+            end_time = time()
+
+            self.ui.tableWidget.setItem(4, 1, QtWidgets.QTableWidgetItem(str(QScompares)))
+            self.ui.tableWidget.setItem(4, 2, QtWidgets.QTableWidgetItem(str(QSchanges)))
+            self.ui.tableWidget.setItem(4, 3, QtWidgets.QTableWidgetItem(str(float('{:.3f}'.format(end_time - start_time)))))
 
 
 if __name__ == "__main__":
