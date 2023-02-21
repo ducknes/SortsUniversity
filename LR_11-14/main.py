@@ -130,7 +130,8 @@ class LabaFinal(QtWidgets.QMainWindow):
     def shell_sort(self, arrayFrom):
         array_for_sorts = arrayFrom.copy()
         n = len(array_for_sorts)
-        interval = int(math.log2(n))
+        virt = int(math.log2(n))
+        interval = 2 * virt + 1
 
         compares = 0
         changes = 0
@@ -185,6 +186,11 @@ class LabaFinal(QtWidgets.QMainWindow):
 
 
     def sorts_analyze(self):
+        for i in range(7):
+            self.ui.tableWidget.setItem(i, 1, None)
+            self.ui.tableWidget.setItem(i, 2, None)
+            self.ui.tableWidget.setItem(i, 3, QtWidgets.QTableWidgetItem(str("")))
+            self.ui.tableWidget.viewport().update()
         mainArray = [random.randint(1, self.ui.spinBox.value() - 1) for x in range(self.ui.spinBox.value())]
         if self.ui.bubble.isChecked():
             self.bubble_sort(mainArray)
@@ -206,7 +212,7 @@ class LabaFinal(QtWidgets.QMainWindow):
             self.shell_sort(mainArray)
         if self.ui.line.isChecked():
             self.line_sort(mainArray)
-        if self.ui.buildin.isCheckable():
+        if self.ui.buildin.isChecked():
             array_for_sort = mainArray.copy()
 
             start_time = time()
