@@ -132,7 +132,7 @@ class LabaFinal(QtWidgets.QMainWindow):
         n = len(array_for_sorts)
         interval = int(math.log2(n))
 
-        compares = 1
+        compares = 0
         changes = 0
 
         start_time = time()
@@ -147,15 +147,45 @@ class LabaFinal(QtWidgets.QMainWindow):
                     j -= interval
                 array_for_sorts[j] = temp
                 changes += 1
-            interval = int(interval / 2) - 1
+            interval = int(interval / 2)
         end_time = time()
 
         self.ui.tableWidget.setItem(3, 1, QtWidgets.QTableWidgetItem(str(compares)))
         self.ui.tableWidget.setItem(3, 2, QtWidgets.QTableWidgetItem(str(changes)))
         self.ui.tableWidget.setItem(3, 3, QtWidgets.QTableWidgetItem(str(float('{:.3f}'.format(end_time - start_time)))))
 
+    def line_sort(self, arrayFrom):
+        array_for_sorts = arrayFrom.copy()
+        digits_array = [0] * self.ui.spinBox.value()
+        _max = max(array_for_sorts)
+        compares = 0
+        assignments = 0
+
+        start_time = time()
+
+        for i in range(len(array_for_sorts)):
+            digits_array[array_for_sorts[i]] += 1
+            assignments += 1
+
+        index = 0
+        for x in range(len(digits_array)):
+            if digits_array[x] != 0:
+                while digits_array[x] > 0:
+                    array_for_sorts[index] = x
+                    index += 1
+                    digits_array[x] -= 1
+                    assignments += 1
+                    compares += 1
+
+        end_time = time()
+
+        self.ui.tableWidget.setItem(5, 1, QtWidgets.QTableWidgetItem(str(compares)))
+        self.ui.tableWidget.setItem(5, 2, QtWidgets.QTableWidgetItem(str(assignments)))
+        self.ui.tableWidget.setItem(5, 3, QtWidgets.QTableWidgetItem(str(float('{:.3f}'.format(end_time - start_time)))))
+
+
     def sorts_analyze(self):
-        mainArray = [random.randint(1, self.ui.spinBox.value()) for x in range(self.ui.spinBox.value())]
+        mainArray = [random.randint(1, self.ui.spinBox.value() - 1) for x in range(self.ui.spinBox.value())]
         if self.ui.bubble.isChecked():
             self.bubble_sort(mainArray)
         if self.ui.select.isChecked():
@@ -174,6 +204,18 @@ class LabaFinal(QtWidgets.QMainWindow):
             self.ui.tableWidget.setItem(4, 3, QtWidgets.QTableWidgetItem(str(float('{:.3f}'.format(end_time - start_time)))))
         if self.ui.shell.isChecked():
             self.shell_sort(mainArray)
+        if self.ui.line.isChecked():
+            self.line_sort(mainArray)
+        if self.ui.buildin.isCheckable():
+            array_for_sort = mainArray.copy()
+
+            start_time = time()
+            array_for_sort = sorted(array_for_sort)
+            end_time = time()
+
+            self.ui.tableWidget.setItem(6, 1, QtWidgets.QTableWidgetItem("-"))
+            self.ui.tableWidget.setItem(6, 2, QtWidgets.QTableWidgetItem("-"))
+            self.ui.tableWidget.setItem(6, 3, QtWidgets.QTableWidgetItem(str(float('{:.3f}'.format(end_time - start_time)))))
 
 
 if __name__ == "__main__":
