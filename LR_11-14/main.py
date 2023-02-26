@@ -160,7 +160,6 @@ class LabaFinal(QtWidgets.QMainWindow):
     def line_sort(self, arrayFrom):
         array_for_sorts = arrayFrom.copy()
         digits_array = [0] * self.ui.spinBox.value()
-        _max = max(array_for_sorts)
         compares = 0
         assignments = 0
 
