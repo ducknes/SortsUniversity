@@ -105,7 +105,7 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "Лабораторная работа №11-14 Антонов 21ВП2"))
+        MainWindow.setWindowTitle(_translate("MainWindow", "Лабораторная работа №11-16 Антонов 21ВП2"))
         item = self.tableWidget.verticalHeaderItem(0)
         item.setText(_translate("MainWindow", "Обмен"))
         item = self.tableWidget.verticalHeaderItem(1)

@@ -130,9 +130,11 @@ class LabaFinal(QtWidgets.QMainWindow):
     def shell_sort(self, arrayFrom):
         array_for_sorts = arrayFrom.copy()
         n = len(array_for_sorts)
-        virt = int(math.log2(n))
-        interval = 2 * virt + 1
-
+        t = int(math.log2(n)) - 1
+        interval = 0
+        for i in range(t):
+            interval = 2 * interval + 1
+            
         compares = 0
         changes = 0
 
