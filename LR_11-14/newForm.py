@@ -87,7 +87,7 @@ class Ui_MainWindow(object):
         self.pushButton.setGeometry(QtCore.QRect(390, 240, 71, 32))
         self.pushButton.setText("")
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap("1617409.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
+        icon.addPixmap(QtGui.QPixmap("/Users/ilyaantonov/Downloads/2 курс/Структуры и Алгоритмы ОД/Sorts/LR_11-14/1617409.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
         self.pushButton.setIcon(icon)
         self.pushButton.setIconSize(QSize(20, 20))
         self.pushButton.setObjectName("pushButton")
