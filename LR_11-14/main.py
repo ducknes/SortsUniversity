@@ -2,10 +2,13 @@ import math
 import random
 import sys
 from time import time
-from newForm import *
+from NF import *
 
 QSchanges = 0
 QScompares = 0
+
+PSchanges = 0
+PScompares = 0
 
 class LabaFinal(QtWidgets.QMainWindow):
     def __init__(self, parent=None):
@@ -49,6 +52,7 @@ class LabaFinal(QtWidgets.QMainWindow):
         self.ui.tableWidget.setItem(0, 1, QtWidgets.QTableWidgetItem(str(compare_count)))
         self.ui.tableWidget.setItem(0, 2, QtWidgets.QTableWidgetItem(str(change_count)))
         self.ui.tableWidget.setItem(0, 3, QtWidgets.QTableWidgetItem(str(float('{:.3f}'.format(end_time - start_time)))))
+        self.ui.tableWidget.setItem(0, 4, QtWidgets.QTableWidgetItem(str(self.isSorted(array_for_sort))))
 
     def selection_sort(self, arrayFrom):
         array_for_sort = arrayFrom.copy()
@@ -73,6 +77,7 @@ class LabaFinal(QtWidgets.QMainWindow):
         self.ui.tableWidget.setItem(1, 1, QtWidgets.QTableWidgetItem(str(compare_count)))
         self.ui.tableWidget.setItem(1, 2, QtWidgets.QTableWidgetItem(str(change_count)))
         self.ui.tableWidget.setItem(1, 3, QtWidgets.QTableWidgetItem(str(float('{:.3f}'.format(end_time - start_time)))))
+        self.ui.tableWidget.setItem(1, 4, QtWidgets.QTableWidgetItem(str(self.isSorted(array_for_sort))))
 
     def insertion_sort(self, arrayFrom):
         array_for_sort = arrayFrom.copy()
@@ -96,6 +101,7 @@ class LabaFinal(QtWidgets.QMainWindow):
         self.ui.tableWidget.setItem(2, 1, QtWidgets.QTableWidgetItem(str(compare_count)))
         self.ui.tableWidget.setItem(2, 2, QtWidgets.QTableWidgetItem(str(change_count)))
         self.ui.tableWidget.setItem(2, 3, QtWidgets.QTableWidgetItem(str(float('{:.3f}'.format(end_time - start_time)))))
+        self.ui.tableWidget.setItem(2, 4, QtWidgets.QTableWidgetItem(str(self.isSorted(array_for_sort))))
 
     def quick_sort(self, arrayFrom, start, end):
         if end - start > 1:
@@ -156,6 +162,7 @@ class LabaFinal(QtWidgets.QMainWindow):
         self.ui.tableWidget.setItem(3, 1, QtWidgets.QTableWidgetItem(str(compares)))
         self.ui.tableWidget.setItem(3, 2, QtWidgets.QTableWidgetItem(str(changes)))
         self.ui.tableWidget.setItem(3, 3, QtWidgets.QTableWidgetItem(str(float('{:.3f}'.format(end_time - start_time)))))
+        self.ui.tableWidget.setItem(3, 4, QtWidgets.QTableWidgetItem(str(self.isSorted(array_for_sorts))))
 
     def line_sort(self, arrayFrom):
         array_for_sorts = arrayFrom.copy()
@@ -184,7 +191,62 @@ class LabaFinal(QtWidgets.QMainWindow):
         self.ui.tableWidget.setItem(5, 1, QtWidgets.QTableWidgetItem(str(compares)))
         self.ui.tableWidget.setItem(5, 2, QtWidgets.QTableWidgetItem(str(assignments)))
         self.ui.tableWidget.setItem(5, 3, QtWidgets.QTableWidgetItem(str(float('{:.3f}'.format(end_time - start_time)))))
+        self.ui.tableWidget.setItem(5, 4, QtWidgets.QTableWidgetItem(str(self.isSorted(array_for_sorts))))
 
+    def isSorted(self, array):
+        for i in range(len(array) - 1):
+            if array[i] > array[i + 1]:
+                return False
+        return True
+    
+    def pyromid_sort(self, array):
+        global PSchanges
+        global PScompares
+        array_for_sorts = array.copy()
+        n = len(array_for_sorts)
+
+        start_time = time()
+  
+        # Build max heap
+        for i in range(n//2, -1, -1):
+            self.fix_down(array_for_sorts, n, i)
+    
+        for i in range(n-1, 0, -1):
+            # Swap
+            array_for_sorts[i], array_for_sorts[0] = array_for_sorts[0], array_for_sorts[i]
+            PSchanges += 1
+    
+            # Heapify root element
+            self.fix_down(array_for_sorts, i, 0)
+        end_time = time()
+
+        self.ui.tableWidget.setItem(7, 1, QtWidgets.QTableWidgetItem(str(PScompares)))
+        self.ui.tableWidget.setItem(7, 2, QtWidgets.QTableWidgetItem(str(PSchanges)))
+        self.ui.tableWidget.setItem(7, 3, QtWidgets.QTableWidgetItem(str(float('{:.3f}'.format(end_time - start_time)))))
+        self.ui.tableWidget.setItem(7, 4, QtWidgets.QTableWidgetItem(str(self.isSorted(array_for_sorts))))
+
+    def fix_down(self, array_for_sorts, n, i):
+        global PSchanges
+        global PScompares
+
+        largest = i
+        l = 2 * i + 1
+        r = 2 * i + 2
+    
+        if l < n and array_for_sorts[i] < array_for_sorts[l]:
+            largest = l
+            PScompares += 2
+    
+        if r < n and array_for_sorts[largest] < array_for_sorts[r]:
+            largest = r
+            #PScompares += 2
+    
+        # If root is not largest, swap with largest and continue heapifying
+        if largest != i:
+            array_for_sorts[i], array_for_sorts[largest] = array_for_sorts[largest], array_for_sorts[i]
+            self.fix_down(array_for_sorts, n, largest)
+            #PScompares += 1
+            #PSchanges += 1
 
     def sorts_analyze(self):
         for i in range(7):
@@ -209,6 +271,7 @@ class LabaFinal(QtWidgets.QMainWindow):
             self.ui.tableWidget.setItem(4, 1, QtWidgets.QTableWidgetItem(str(QScompares)))
             self.ui.tableWidget.setItem(4, 2, QtWidgets.QTableWidgetItem(str(QSchanges)))
             self.ui.tableWidget.setItem(4, 3, QtWidgets.QTableWidgetItem(str(float('{:.3f}'.format(end_time - start_time)))))
+            self.ui.tableWidget.setItem(4, 4, QtWidgets.QTableWidgetItem(str(self.isSorted(array_for_sort))))
         if self.ui.shell.isChecked():
             self.shell_sort(mainArray)
         if self.ui.line.isChecked():
@@ -223,6 +286,9 @@ class LabaFinal(QtWidgets.QMainWindow):
             self.ui.tableWidget.setItem(6, 1, QtWidgets.QTableWidgetItem("-"))
             self.ui.tableWidget.setItem(6, 2, QtWidgets.QTableWidgetItem("-"))
             self.ui.tableWidget.setItem(6, 3, QtWidgets.QTableWidgetItem(str(float('{:.3f}'.format(end_time - start_time)))))
+            self.ui.tableWidget.setItem(6, 4, QtWidgets.QTableWidgetItem(str(self.isSorted(array_for_sort))))
+        if self.ui.pyromid.isChecked():
+            self.pyromid_sort(mainArray)
 
 
 if __name__ == "__main__":
