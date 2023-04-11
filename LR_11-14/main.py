@@ -239,14 +239,11 @@ class LabaFinal(QtWidgets.QMainWindow):
     
         if r < n and array_for_sorts[largest] < array_for_sorts[r]:
             largest = r
-            #PScompares += 2
     
         # If root is not largest, swap with largest and continue heapifying
         if largest != i:
             array_for_sorts[i], array_for_sorts[largest] = array_for_sorts[largest], array_for_sorts[i]
             self.fix_down(array_for_sorts, n, largest)
-            #PScompares += 1
-            #PSchanges += 1
 
     def sorts_analyze(self):
         for i in range(7):
